@@ -2,7 +2,7 @@
 /**
     @title Equipment
     @author Eman @SgtChiliPapi
-    @notice: NFT Contract for items equippable to characters. Originally created for CHAINLINK HACKATHON FALL 2022
+    @notice: NFT Contract for items equippable to characters.
 */
 pragma solidity ^0.8.7;
 

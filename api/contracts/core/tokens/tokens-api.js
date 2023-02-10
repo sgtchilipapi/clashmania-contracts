@@ -17,7 +17,7 @@ function getTokenAddress(token_name){
     if(token_name == "bluespark"){return tokens.bluespark.address}
     if(token_name == "enerlink"){return tokens.enerlink.address}
     if(token_name == "clank"){return tokens.clank.address}
-    if(token_name == "clankmatic"){return tokens.clankmatic.address}
+    if(token_name == "clankftm"){return tokens.clankftm.address}
     if(token_name == "clankboom"){return tokens.clankboom.address}
     if(token_name == "clankthump"){return tokens.clankthump.address}
     if(token_name == "clankclink"){return tokens.clankclink.address}
@@ -34,7 +34,7 @@ function getAbi(token_name){
     if(token_name == "enerlink"){
         return abis.core.tokens.consumables
     }
-    if(token_name == "clank" || token_name == "clankmatic" || token_name == "clankboom" || token_name == "clankthump" || token_name == "clankclink" || token_name == "clanksnap"){
+    if(token_name == "clank" || token_name == "clankftm" || token_name == "clankboom" || token_name == "clankthump" || token_name == "clankclink" || token_name == "clanksnap"){
         return abis.core.tokens.currency
     }
 }

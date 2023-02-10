@@ -5,7 +5,7 @@
     @title Materials Addresses Library
     @author Eman @SgtChiliPapi
     @notice This library specifies the specific deployment addresses for each material (ERC20 tokens).
-            Originally made for a submission to CHAINLINK HACKATHON 2022.
+            
  */
 
  pragma solidity =0.8.17;

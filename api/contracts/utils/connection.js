@@ -1,7 +1,7 @@
 import {ethers} from 'ethers'
 import Web3Modal from 'web3modal'
 const networks = require("../../../app-config/networks")
-const rpcUrl = networks.endpoint.http
+const rpcUrl = networks.fantom.http
 
 export async function getProvider(){
     const provider = new ethers.providers.JsonRpcProvider(rpcUrl)
@@ -32,7 +32,7 @@ export async function getSignedContractInstance(address, abi){
 
 export async function getListenerInstance(address, abi){
     const provider = await getProvider(rpcUrl)
-    provider.pollingInterval = 1000;
+    provider.pollingInterval = 500;
     const contract = new ethers.Contract(address, abi, provider)
     return contract
 }

@@ -5,7 +5,7 @@
     @title Equipment Library
     @author Eman @SgtChiliPapi
     @notice This library constructs the name and image URL of an equipment according to its type, rarity, dominant stat, and dominance extremity.
-            Originally made for a submission to CHAINLINK HACKATHON 2022.
+            
  */
 
 pragma solidity ^0.8.7;
