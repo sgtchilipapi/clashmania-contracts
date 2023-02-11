@@ -9,13 +9,15 @@ const tokens_api = require("./core/tokens/tokens-api")
 const character_vrf = require("./periphery/chainlink/vrf/character-vrf")
 const equipment_vrf = require("./periphery/chainlink/vrf/equipment-vrf")
 const dungeon_vrf = require("./periphery/chainlink/vrf/dungeon-vrf")
+const chef_api = require("./core/defi/chef-api")
 
 module.exports = {
     core:{
         ctrs: characters_api,
         eqpts: equipments_api,
         tokens: tokens_api,
-        dungeons: dungeons_api
+        dungeons: dungeons_api,
+        defi: chef_api
     },
     periphery:{
         chainlink:{

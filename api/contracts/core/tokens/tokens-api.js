@@ -6,7 +6,7 @@ import {ethers} from 'ethers'
 ///contract config
 const tokens = deployments.contracts.tokens
 
-function getTokenAddress(token_name){
+export function getTokenAddress(token_name){
     if(token_name == "boom"){return tokens.boom.address}
     if(token_name == "thump"){return tokens.thump.address}
     if(token_name == "clink"){return tokens.clink.address}
@@ -22,6 +22,7 @@ function getTokenAddress(token_name){
     if(token_name == "clankthump"){return tokens.clankthump.address}
     if(token_name == "clankclink"){return tokens.clankclink.address}
     if(token_name == "clanksnap"){return tokens.clanksnap.address}
+    if(token_name == "wftm"){return tokens.wftm.address}
 }
 
 function getAbi(token_name){
@@ -34,17 +35,18 @@ function getAbi(token_name){
     if(token_name == "enerlink"){
         return abis.core.tokens.consumables
     }
-    if(token_name == "clank" || token_name == "clankftm" || token_name == "clankboom" || token_name == "clankthump" || token_name == "clankclink" || token_name == "clanksnap"){
+    if(token_name == "wftm" || token_name == "clank" || token_name == "clankftm" || token_name == "clankboom" || token_name == "clankthump" || token_name == "clankclink" || token_name == "clanksnap"){
         return abis.core.tokens.currency
     }
 }
 
 function getSpender(spender_name){
     if(spender_name == 'equipment_minter')return deployments.contracts.equipments.minter.address
+    if(spender_name == 'minichef')return deployments.contracts.defi.minichefv2.address
 }
 
 ///contract connections
-async function getContract(token_name){
+export async function getContract(token_name){
     const address = getTokenAddress(token_name)
     const abi = getAbi(token_name)
     const contract = await connection.getContractInstance(address, abi)
@@ -91,8 +93,10 @@ export async function transfer(token_name, to, amount){
 
 ///Only for catalysts
 export async function mint(token_name, addressTo, amount){
+    const amt = ethers.utils.parseEther(amount.toString())
+    alert(amt)
     const contract = await getSignedContract(token_name)
-    const mint_tx = await contract.mint(addressTo, amount)
+    const mint_tx = await contract.mint(addressTo, amt)
     const receipt = mint_tx.wait()
     return receipt
 }
