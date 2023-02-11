@@ -43,6 +43,10 @@ function getAbi(token_name){
 function getSpender(spender_name){
     if(spender_name == 'equipment_minter')return deployments.contracts.equipments.minter.address
     if(spender_name == 'minichef')return deployments.contracts.defi.minichefv2.address
+    if(spender_name == 'yellowspark') return deployments.contracts.tokens.yellowspark.address
+    if(spender_name == 'whitespark') return deployments.contracts.tokens.whitespark.address
+    if(spender_name == 'redspark') return deployments.contracts.tokens.redspark.address
+    if(spender_name == 'bluespark') return deployments.contracts.tokens.bluespark.address
 }
 
 ///contract connections
@@ -93,8 +97,9 @@ export async function transfer(token_name, to, amount){
 
 ///Only for catalysts
 export async function mint(token_name, addressTo, amount){
+    console.log(`Passed in: ${amount}`)
     const amt = ethers.utils.parseEther(amount.toString())
-    alert(amt)
+    console.log(`Amount: ${amt}`)
     const contract = await getSignedContract(token_name)
     const mint_tx = await contract.mint(addressTo, amt)
     const receipt = mint_tx.wait()
