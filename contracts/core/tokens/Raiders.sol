@@ -623,23 +623,32 @@ abstract contract ERC20Burnable is Context, ERC20 {
 
 pragma solidity ^0.8.4;
 
-contract SnapLink is ERC20, ERC20Burnable, Ownable {
+contract Raiders is ERC20, ERC20Burnable, Ownable {
 
-    address dungeon;
-    constructor() ERC20("Material SnapLink", " SNAP!") {
-        _mint(msg.sender, 10000 * 10 ** decimals());
+    uint256 constant MAX_CONVERTIBLE_TOKENS = 76_988_743 ether;
+    uint256 public oldTokensMigrated;
+
+    ERC20Burnable public oldToken;
+
+    constructor(address oldTokenAddress) ERC20("Raiders Token", " RDRS") {
+        oldToken = ERC20Burnable(oldTokenAddress);
     }
 
-    function mint(address to, uint256 amount) public onlyDungeon {
+    ///@notice Can only be called by the owner, which is set to be the MasterChefV2 contract.
+    function mint(address to, uint256 amount) public onlyOwner {
         _mint(to, amount);
     }
 
-    modifier onlyDungeon(){
-        require(msg.sender == dungeon, "Only the dungeon contract can mint tokens.");
-        _;
+    ///@notice Swaps the old tokens (R4ID) with the new (RDRS) by burning the old tokens of the owner.
+    /// The total amount of tokens upgraded cannot exceed the maximum amount set which is the sum of the current
+    /// circulating supply of the old tokens at the time of this contract's deployment. So any old tokens in 
+    /// excess of the maximum amount CANNOT be converted into the new token anymore.
+    function migrateOldTokens(uint256 amount) public {
+        require((oldTokensMigrated + amount) <= MAX_CONVERTIBLE_TOKENS, "Cannot exceed maximum amount of convertible tokens.");
+        oldToken.burnFrom(msg.sender, amount);
+        oldTokensMigrated += amount;
+        _mint(msg.sender, amount);
     }
 
-    function setDungeonContract(address _dungeon) public onlyOwner {
-        dungeon = _dungeon;
-    }
+    
 }

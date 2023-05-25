@@ -36,7 +36,7 @@ async function deployAll(config){
     const [equipment_contract, eminter_contract] = await equipments(config, character_contract)
     const equipment_manager  = await equipmentManager(character_contract, equipment_contract)
     const dungeons_system = await dungeons(config, character_contract, equipment_contract, equipment_manager)
-    await setMinterInEnerLink(config, eminter_contract)
+    await setMinterInEnerLink(config, dungeons_system)
     await setDungeonInTokens(config, dungeons_system)
     // await approveEquipmentMinter(config, eminter_contract)
 }

@@ -81,7 +81,7 @@ contract Dungeons is Ownable{
     mapping(uint256 => last_energy_update) public energy_balances;
 
     ///Arrays of addresses for the materials and catalyst tokens
-    address[4] private materials_addresses;
+    address[2] private materials_addresses;
 
     ///Supply cap of each dungeon every 3 hours
     mapping(uint256 => uint256) public dungeon_loot_remaining;
@@ -493,13 +493,13 @@ contract Dungeons is Ownable{
         ///EXTCALL: mint the actual tokens
         material_token.mint(sender, actual_amount * 1 ether);
 
-        ///Determine whether there will be a snaplink loot drop
+        ///Determine whether there will be an energy token loot drop
         bool snap_loot = rollSnapLink(random_num_snap);
         uint256 snap_amount;
         ///If there is, calculate the loot amount using the same min and max
         if(snap_loot){
             snap_amount = getActualLootAmount(random_num_snap_amount, min_amount, max_amount);
-            _MaterialToken snap_link = _MaterialToken(materials_addresses[3]);
+            _MaterialToken snap_link = _MaterialToken(materials_addresses[1]);
             snap_link.mint(sender, snap_amount * 1 ether);
         }
 

@@ -627,11 +627,12 @@ interface LP_Token {
     function transferFrom(address from, address to, uint256 amount) external returns (bool);
 }
 
-contract RedSparkstone is ERC20, ERC20Burnable, Ownable {
+contract Catalyst is ERC20, ERC20Burnable, Ownable {
 
-    ///The LP token of $CLANK-$CLINK that will be burned to mint $rSPARK.
+    ///The LP token of $RDRS-$MAT that will be burned to mint $CAT.
     LP_Token lp_token;
-    constructor() ERC20("Catalyst Red Sparkstone", " rSPARK") {
+
+    constructor() ERC20("Catalyst", " CAT") {
         _mint(msg.sender, 100 * 10 ** decimals());
     }
 
@@ -643,7 +644,7 @@ contract RedSparkstone is ERC20, ERC20Burnable, Ownable {
     function mint(address to, uint256 amount) public {
         uint256 lp_token_amount = amount * 10;
         bool success = lp_token.transferFrom(msg.sender, address(0), lp_token_amount);
-        require(success, "SparkStone: Failed to tranfer LP tokens.");
+        require(success, "Catalyst: Failed to tranfer LP tokens.");
         _mint(to, amount);
     }
 }

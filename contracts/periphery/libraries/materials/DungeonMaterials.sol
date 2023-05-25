@@ -12,9 +12,12 @@
  library DungeonMaterials {
 
     function getDungeonMaterials(uint256 dungeon, uint256 tier) internal pure returns (uint256 material, uint256 min_amount, uint256 max_amount){
-        if(dungeon == 0){material = 0;}
-        if(dungeon == 1){material = 1;}
-        if(dungeon == 2){material = 2;}
+        // if(dungeon == 0){material = 0;}
+        // if(dungeon == 1){material = 1;}
+        // if(dungeon == 2){material = 2;}
+        
+        //Simplified implementation (only 1 material)
+        material = 0;
         (min_amount, max_amount) = getAmount(tier);
     }
 

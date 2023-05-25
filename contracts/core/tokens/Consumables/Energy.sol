@@ -623,28 +623,24 @@ abstract contract ERC20Burnable is Context, ERC20 {
 
 pragma solidity ^0.8.4;
 
-interface LP_Token {
-    function transferFrom(address from, address to, uint256 amount) external returns (bool);
-}
+contract Energy is ERC20, ERC20Burnable, Ownable {
 
-contract BlueSparkstone is ERC20, ERC20Burnable, Ownable {
-
-    ///The LP token of $CLANK-$SNAP that will be burned to mint $bSPARK.
-    LP_Token lp_token;
-
-    constructor() ERC20("Catalyst Blue Sparkstone", " bSPARK") {
-        _mint(msg.sender, 100 * 10 ** decimals());
+    address minter;
+    constructor() ERC20("Energy", " ENE") {
+        ///Mint 8,888 tokens for initial pool to be paired with 20,000 $RDRS
+        _mint(msg.sender, 8888 * 10 ** decimals());
     }
 
-    ///Set the LP token pair address to be used in exchange of minting this specific sparkstone.
-    function setLpToken(address lp_address) public onlyOwner {
-        lp_token = LP_Token(lp_address);
-    }
-
-    function mint(address to, uint256 amount) public {
-        uint256 lp_token_amount = amount * 10;
-        bool success = lp_token.transferFrom(msg.sender, address(0), lp_token_amount);
-        require(success, "SparkStone: Failed to tranfer LP tokens.");
+    function mint(address to, uint256 amount) public onlyMinter {
         _mint(to, amount);
+    }
+
+    modifier onlyMinter(){
+        require(msg.sender == minter, "Only the minter contract can mint tokens.");
+        _;
+    }
+
+    function setMinter(address _minter) public onlyOwner {
+        minter = _minter;
     }
 }
