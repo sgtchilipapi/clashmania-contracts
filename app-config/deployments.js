@@ -75,8 +75,8 @@ const mainnet_deployments = {
             abi: ""
         },
         factory: {
-            address: "",
-            abi: ""
+            address: "0x152eE697f2E276fA89E96742e9bB9aB1F2E61bE3",
+            abi: "https://ftmscan.com/address/0x152eE697f2E276fA89E96742e9bB9aB1F2E61bE3#code"
         }
     },
     characters: {

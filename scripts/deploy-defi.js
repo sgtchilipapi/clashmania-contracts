@@ -11,19 +11,20 @@ require('dotenv').config()
 const deployments = require("../app-config/deployments")
 
 async function main() {
-  const clank = await deployERC20("ClankToken")
-  const boom = await deployERC20("BoomSteel")
-  const thump = await deployERC20("ThumpIron")
-  const clink = await deployERC20("ClinkGlass")
-  const snap = await deployERC20("SnapLink")
-  const yellow = await deployERC20("YellowSparkstone")
-  const white = await deployERC20("WhiteSparkstone")
-  const red = await deployERC20("RedSparkstone")
-  const blue = await deployERC20("BlueSparkstone")
-  const enerlink = await deployERC20("EnerLink")
-  await setPairAddress(clank, [boom, thump, clink, snap], [yellow, white, red, blue])
-  const mainPair = await getClankWftmPair(clank)
-  const _chef = await deployChef(clank.address, mainPair)
+  const rdrs = deployments.contracts.tokens.rdrstoken
+  const mat = await deployERC20("Material")
+  // const thump = await deployERC20("ThumpIron")
+  // const clink = await deployERC20("ClinkGlass")
+  // const snap = await deployERC20("SnapLink")
+  const cat = await deployERC20("Catalyst")
+  // const white = await deployERC20("WhiteSparkstone")
+  // const red = await deployERC20("RedSparkstone")
+  // const blue = await deployERC20("BlueSparkstone")
+  const ene = await deployERC20("Energy")
+  await setPairAddress(rdrs, [mat], [cat])
+  // const mainPair = await getClankWftmPair(clank)
+  const mainPair = deployments.contracts.tokens.rdrsfantom.address  
+  // const _chef = await deployChef(clank.address, mainPair)
 
   async function deployERC20(ContractName){
     const ERC20Token = await ethers.getContractFactory(ContractName)
@@ -56,7 +57,7 @@ async function main() {
   async function setPairAddress(clank, materials, catalysts){
     const Factory = await ethers.getContractFactory("UniswapV2Factory")
     const factory = Factory.attach(deployments.contracts.defi.factory.address)
-    for(let i = 0; i < 4; i++){
+    for(let i = 0; i < materials.length; i++){
       const createPair = await factory.createPair(clank.address, materials[i].address)
       await createPair.wait()
       const pairAddress = await factory.getPair(clank.address, materials[i].address)

@@ -95,13 +95,13 @@ contract Dungeons is Ownable{
     event LootGained(address user, loot_gained loot);
     event ExpAndStatGained(uint256 character_id, character_gained char_gain);
     event BattleEnded(uint256 battle_id, uint256 battle_result);
-    event DungeonsReplenished(uint256 dungeon1, uint256 dungeon2, uint256 dungeon3);
+    event DungeonsReplenished(uint256 dungeon1);
 
     constructor(
         address charactersNftAddress, 
         address equipmentNftAddress, 
         address equipmentManagerAddress,
-        address[4] memory materials,
+        address[2] memory materials,
         address enerlinkAddress
     ){
         characters = _Characters(charactersNftAddress);
@@ -111,11 +111,11 @@ contract Dungeons is Ownable{
         enerlink = _EnerLink(enerlinkAddress);
         vrf_refunder = msg.sender;
         dungeon_loot_remaining[0] = 844;
-        dungeon_loot_remaining[1] = 844;
-        dungeon_loot_remaining[2] = 844;
+        // dungeon_loot_remaining[1] = 844;
+        // dungeon_loot_remaining[2] = 844;
         dungeon_loot_cap[0] = 844;
-        dungeon_loot_cap[1] = 844;
-        dungeon_loot_cap[2] = 844;
+        // dungeon_loot_cap[1] = 844;
+        // dungeon_loot_cap[2] = 844;
     }
 
     ///@notice This function initiates a battle by requesting random numbers from the VRF and setting the battle parameters:
@@ -552,9 +552,9 @@ contract Dungeons is Ownable{
 
     function replenishDungeonLoot() public onlyDungeonKeeper {
         dungeon_loot_remaining[0] = dungeon_loot_cap[0];
-        dungeon_loot_remaining[1] = dungeon_loot_cap[1];
-        dungeon_loot_remaining[2] = dungeon_loot_cap[2];
-        emit DungeonsReplenished(dungeon_loot_remaining[0], dungeon_loot_remaining[1], dungeon_loot_remaining[2]);
+        // dungeon_loot_remaining[1] = dungeon_loot_cap[1];
+        // dungeon_loot_remaining[2] = dungeon_loot_cap[2];
+        emit DungeonsReplenished(dungeon_loot_remaining[0]);
     }
 
     function setDungeonKeeper(address keeperAddress) public onlyOwner {
