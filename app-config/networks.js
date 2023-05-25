@@ -1,16 +1,8 @@
-const mainnet = {
-    http:"https://wild-still-sky.matic.quiknode.pro/b1af5cd242b1dff46e044a1aaad6ab103262f6db/",
-    wss:"wss://wild-still-sky.matic.quiknode.pro/b1af5cd242b1dff46e044a1aaad6ab103262f6db/"
-}
-
-const testnet = {
-    http:"https://magical-warmhearted-bush.matic-testnet.quiknode.pro/61d738e468e43d59ee3708f88adc574265db2f0e/",
-    wss:"wss://magical-warmhearted-bush.matic-testnet.quiknode.pro/61d738e468e43d59ee3708f88adc574265db2f0e/"
+const fantom_mainnet = {
+    http:"https://rpc.ankr.com/fantom/f4901f732bb5c937b83bab515d0cd80fbd5b8892f247debe56a35a360ad6c864",
+    wss:"wss://rpc.ankr.com/fantom/ws/f4901f732bb5c937b83bab515d0cd80fbd5b8892f247debe56a35a360ad6c864"
 }
 
 module.exports = {
-    endpoint: {
-        http: mainnet.http,
-        wss: mainnet.wss
-    },
+        fantom: fantom_mainnet,
 }

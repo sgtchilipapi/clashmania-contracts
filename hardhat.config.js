@@ -15,18 +15,14 @@ module.exports = {
       chainId: 1337,
       allowUnlimitedContractSize: true
     },
-    polygon: {
-      url: _networks.endpoint.http,
-      accounts: [`0x${process.env.DEPLOYER_KEY}`]
-    },
-    mumbai: {
-      url: _networks.endpoint.http,
+    fantom: {
+      url: _networks.fantom.http,
       accounts: [`0x${process.env.DEPLOYER_KEY}`]
     }
   },
   etherscan: {
-    //For polygon mainnet and testnet
-    apiKey: "TSEATXAVPD9QZZNA77KJ95T2Y6YGSUK1W4"
+    //For fantom mainnet and testnet
+    apiKey: "DIZUWNSMRXF239WF6T5AHJA521FUZB88KS"
   },
   solidity: {
     compilers: [

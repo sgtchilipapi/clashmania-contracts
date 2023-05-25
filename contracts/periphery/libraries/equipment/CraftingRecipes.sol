@@ -5,7 +5,7 @@
     @title Crafting Recipes
     @author Eman @SgtChiliPapi
     @notice This library specifies what kind of materials (ERC20 tokens) are required to craft a particular equipment type.
-            Originally made for a submission to CHAINLINK HACKATHON 2022.
+            
  */
 
 pragma solidity ^0.8.7;

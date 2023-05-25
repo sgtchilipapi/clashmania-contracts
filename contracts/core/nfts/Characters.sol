@@ -3,7 +3,6 @@
     @title Characters
     @author Eman @SgtChiliPapi
     @notice: NFT Contract for playable characters.
-    Originally created for CHAINLINK HACKATHON FALL 2022
 */
 pragma solidity ^0.8.7;
 

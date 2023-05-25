@@ -3,7 +3,7 @@
     @title Equipment Manager
     @author Eman @SgtChiliPapi
     @notice: Contract to map equipment items to characters and vice-versa.
-    Originally created for CHAINLINK HACKATHON FALL 2022
+
 */
 pragma solidity ^0.8.7;
 

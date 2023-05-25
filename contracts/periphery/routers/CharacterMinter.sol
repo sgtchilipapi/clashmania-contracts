@@ -6,7 +6,7 @@
     performs the necessary calculations to determine the character's properties and stats and ultimately calls the mint 
     function of the NFT contract with the calculated results as arguments. Only this contract can call the NFT's mint function
     and only one router at a time can be set in the NFT contract as well.
-    Originally created for CHAINLINK HACKATHON FALL 2022
+    
 */
 pragma solidity ^0.8.7;
 

@@ -18,9 +18,9 @@ const testnet_config = {
 const mainnet_config = {
     tokens: deployments.contracts.tokens,
     vrf:{
-        subscription: 439,
-        coordinator: "0xae975071be8f8ee67addbc1a82488f1c24858067",
-        keyHash: "0xd729dc84e21ae57ffb6be0053bf2b0668aa2aaf300a2a7b2ddf7dc0bb6e875a8"
+        subscription: 56,
+        coordinator: "0xd5D517aBE5cF79B7e95eC98dB0f0277788aFF634",
+        keyHash: "0x64ae04e5dba58bc08ba2d53eb33fe95bf71f5002789692fe78fb3778f16121c9"
     },
     keeper:{
         registry: "0x02777053d6764996e594c3E88AF1D58D5363a2e6"
@@ -38,7 +38,7 @@ async function deployAll(config){
     const dungeons_system = await dungeons(config, character_contract, equipment_contract, equipment_manager)
     await setMinterInEnerLink(config, dungeons_system)
     await setDungeonInTokens(config, dungeons_system)
-    // await approveEquipmentMinter(config, eminter_contract)
+    await approveEquipmentMinter(config, eminter_contract)
 }
 
 async function characters(_config){

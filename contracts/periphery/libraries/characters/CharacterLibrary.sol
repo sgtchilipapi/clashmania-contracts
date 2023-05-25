@@ -3,7 +3,7 @@
     @title Character URI Library
     @author Eman @SgtChiliPapi
     @notice: Reference for character Images and Names.
-    Originally created for CHAINLINK HACKATHON FALL 2022
+    
 */
 pragma solidity =0.8.17;
 

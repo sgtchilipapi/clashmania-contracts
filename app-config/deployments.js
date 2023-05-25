@@ -126,6 +126,11 @@ const mainnet_deployments = {
             address: ""
             ///Register new upkeep in https://automation.chain.link
         }
+    },
+    vrfconfig:{
+        subscription: 56,
+        coordinator: "0xd5D517aBE5cF79B7e95eC98dB0f0277788aFF634",
+        keyhash: "0x64ae04e5dba58bc08ba2d53eb33fe95bf71f5002789692fe78fb3778f16121c9",
     }
 }
 

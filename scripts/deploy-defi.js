@@ -22,7 +22,7 @@ async function main() {
   const blue = await deployERC20("BlueSparkstone")
   const enerlink = await deployERC20("EnerLink")
   await setPairAddress(clank, [boom, thump, clink, snap], [yellow, white, red, blue])
-  const mainPair = await getClankWmaticPair(clank)
+  const mainPair = await getClankWftmPair(clank)
   const _chef = await deployChef(clank.address, mainPair)
 
   async function deployERC20(ContractName){
@@ -39,13 +39,13 @@ async function main() {
     await chef.deployed()
     console.log(`MiniChefV2 Fork deployed at: ${chef.address}`)
 
-    ///Add CLANK-WMATIC pair in MiniChefV2
+    ///Add CLANK-wftm pair in MiniChefV2
     const addPoolTx = await chef.add(1000, lpAddress, "0x0000000000000000000000000000000000000000")
     await addPoolTx.wait()
-    console.log(`Pool CLANK-WMATIC added in MiniChefV2!`)
+    console.log(`Pool CLANK-wftm added in MiniChefV2!`)
 
     ///Set emission rate of CLANK per second
-    const emissionRate = ethers.utils.parseEther("0.01")
+    const emissionRate = ethers.utils.parseEther("1")
     const setEmissionRateTx = await chef.setSushiPerSecond(emissionRate)
     await setEmissionRateTx.wait()
     console.log(`Emission rate set at ${emissionRate} per second`)
@@ -66,13 +66,13 @@ async function main() {
     }
   }
 
-  async function getClankWmaticPair(clank){
+  async function getClankWftmPair(clank){
     const Factory = await ethers.getContractFactory("UniswapV2Factory")
     const factory = Factory.attach(deployments.contracts.defi.factory.address)
-    const createPair = await factory.createPair(clank.address, deployments.contracts.tokens.wmatic.address)
+    const createPair = await factory.createPair(clank.address, deployments.contracts.tokens.wftm.address)
     await createPair.wait()
-    const pairAddress = await factory.getPair(clank.address, deployments.contracts.tokens.wmatic.address)
-    console.log(`LP CLANK-wMATIC pair set with address: ${pairAddress}`)
+    const pairAddress = await factory.getPair(clank.address, deployments.contracts.tokens.wftm.address)
+    console.log(`LP CLANK-wftm pair set with address: ${pairAddress}`)
     return pairAddress
   }
 }
