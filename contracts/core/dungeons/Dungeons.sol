@@ -531,7 +531,7 @@ contract Dungeons is Ownable{
 
     ///@notice Consume enerlink to restore character's energy to full. Costs 1 $eLINK
     function consumeEnerLink(uint256 character_id) public returns (bool restored){
-        require(getCharacterEnergy(character_id) < 1000, "Dungeons: character already at full hp");
+        require(getCharacterEnergy(character_id) < 1000, "Dungeons: character already at full energy");
         enerlink.burnFrom(msg.sender, 1 ether);
         energy_balances[character_id] = last_energy_update({
             energy: 1000,

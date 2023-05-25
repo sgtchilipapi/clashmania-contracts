@@ -625,22 +625,22 @@ pragma solidity ^0.8.4;
 
 contract Energy is ERC20, ERC20Burnable, Ownable {
 
-    address minter;
+    address dungeon;
     constructor() ERC20("Energy", " ENE") {
         ///Mint 8,888 tokens for initial pool to be paired with 20,000 $RDRS
         _mint(msg.sender, 8888 * 10 ** decimals());
     }
 
-    function mint(address to, uint256 amount) public onlyMinter {
+    function mint(address to, uint256 amount) public onlyDungeon {
         _mint(to, amount);
     }
 
-    modifier onlyMinter(){
-        require(msg.sender == minter, "Only the minter contract can mint tokens.");
+    modifier onlyDungeon(){
+        require(msg.sender == dungeon, "Only the dungeon contract can mint tokens.");
         _;
     }
 
-    function setMinter(address _minter) public onlyOwner {
-        minter = _minter;
+    function setDungeon(address _dungeon) public onlyOwner {
+        dungeon = _dungeon;
     }
 }

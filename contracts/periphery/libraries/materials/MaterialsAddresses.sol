@@ -22,30 +22,35 @@
                 it soft textured or not.
      */
     function getMaterialAddress(uint256 material_index) internal pure returns (address material_address){
+        //Simplifying token system but not changing the code infrastructure for possible future updates.
+        material_address  = address(0x5Ff4BDc310a1A96Acac76361d97601F112781BfE); //hard-code the deployed address
+
         //BOOMSTEEL: Main material for weapons
-        if(material_index == 0){material_address = address(0x5Ff4BDc310a1A96Acac76361d97601F112781BfE);} 
+        // if(material_index == 0){material_address = address(0x5Ff4BDc310a1A96Acac76361d97601F112781BfE);} 
 
-        //THUMPIRON: Main material for armors and helms
-        if(material_index == 1){material_address = address(0xC642e01D88650cA17e9D7Eff66E034Fd2f863AbA);}
+        // //THUMPIRON: Main material for armors and helms
+        // if(material_index == 1){material_address = address(0xC642e01D88650cA17e9D7Eff66E034Fd2f863AbA);}
 
-        //CLINKGLASS: Main material for accessories
-        if(material_index == 2){material_address = address(0x633BCD5093Ac8FaC60183eFDA151e3C55D98BbCE);}
+        // //CLINKGLASS: Main material for accessories
+        // if(material_index == 2){material_address = address(0x633BCD5093Ac8FaC60183eFDA151e3C55D98BbCE);}
 
-        //SNAPLINK: Main material for consumables
-        if(material_index == 3){material_address = address(0x94FC8D420D7488bC0FF198168d0155a7a1936527);}
+        // //SNAPLINK: Main material for consumables
+        // if(material_index == 3){material_address = address(0x94FC8D420D7488bC0FF198168d0155a7a1936527);}
     }
 
     function getCatalystAddress(uint256 catalyst_index) internal pure returns (address catalyst_address){
-        //YELLOW SPARKSTONE: Catalyst for weapons
-        if(catalyst_index == 0){catalyst_address = address(0xd0d61c5b3a57875d1747fa4a336A40AEDE9108aa);}
+        catalyst_address = address(0xd0d61c5b3a57875d1747fa4a336A40AEDE9108aa); 
 
-        //WHITE SPARKSTONE: Catalyst for armors and helms
-        if(catalyst_index == 1){catalyst_address = address(0x1258558Fd5A0b91b3f0e07F458BbdF473cd2093e);}
+        // //YELLOW SPARKSTONE: Catalyst for weapons
+        // if(catalyst_index == 0){catalyst_address = address(0xd0d61c5b3a57875d1747fa4a336A40AEDE9108aa);}
 
-        //RED SPARKSTONE: Catalyst for accessories
-        if(catalyst_index == 2){catalyst_address = address(0x6dC194934FD405D8dd228Bcd2776EFF4B1A9d254);}
+        // //WHITE SPARKSTONE: Catalyst for armors and helms
+        // if(catalyst_index == 1){catalyst_address = address(0x1258558Fd5A0b91b3f0e07F458BbdF473cd2093e);}
 
-        //BLUE SPARKSTONE: Catalyst for consumables
-        if(catalyst_index == 3){catalyst_address = address(0x97c5BC77970CC64Fe1b9A0eC9a315A3Ea5Fe3Eb8);}
+        // //RED SPARKSTONE: Catalyst for accessories
+        // if(catalyst_index == 2){catalyst_address = address(0x6dC194934FD405D8dd228Bcd2776EFF4B1A9d254);}
+
+        // //BLUE SPARKSTONE: Catalyst for consumables
+        // if(catalyst_index == 3){catalyst_address = address(0x97c5BC77970CC64Fe1b9A0eC9a315A3Ea5Fe3Eb8);}
     }
  }

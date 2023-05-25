@@ -58,18 +58,19 @@ contract EquipmentMinter is Ownable, Pausable{
 
     ///The msg.value required to mint to prevent spam and deplete VRF funds.
     ///Currently unset (0) for judging purposes as stated in the hackathon rules.
-    uint256 public mint_fee;
+    uint256 public mint_fee = 1 ether;
 
     ///mapping to restrict free mints to players/characters
     //character => equipment_type => bool
     mapping(uint256 => mapping(uint256 => bool)) public character_minted_free;
 
     ///Arrays of addresses for the materials and catalyst tokens
-    address[4] private materials_addresses;
-    address[4] private catalysts_addresses; 
+    ///Simplified to include only 1 mat and 1 cat
+    address private materials_addresses;
+    address private catalysts_addresses; 
     
     event EquipmentRequested(address indexed player_address, equipment_request request);
-    constructor(address equipmentsNftAddress, address charactersAddress, address enerlinkAddress, address[4] memory materials, address[4] memory catalysts){
+    constructor(address equipmentsNftAddress, address charactersAddress, address enerlinkAddress, address materials, address catalysts){
         equipmentsNft = _Equipments(equipmentsNftAddress);
         characters = _Characters(charactersAddress);
         enerlink = _EnerLink(enerlinkAddress);
@@ -90,7 +91,7 @@ contract EquipmentMinter is Ownable, Pausable{
         ///The MATIC being received is not payment for the NFT but rather to simply replenish the VRF subscribtion's funds and also serves as an effective anti-spam measure as well.
         ///Restrict number of mints to below 4 to avoid insufficient gas errors and accidental requests for very large number of mints.
         require(item_count > 0 && item_count < 4, "eMNTR: Can only request to mint 1 to 3 items at a time.");
-        require(msg.value >= (item_count * mint_fee), "eMNTR: Incorrect amount for equipment minting. Send exactly 0.01 MATIC per item requested.");
+        require(msg.value >= (item_count * mint_fee), "eMNTR: Incorrect amount for equipment minting. Send exactly 0.01 FTM per item requested.");
         
         ///Burn the materials from the user's balance.
         bool enough = getEquipmentRequirements(_equipment_type, item_count);
@@ -159,7 +160,7 @@ contract EquipmentMinter is Ownable, Pausable{
         require(_equipment_type < 5, "eMNTR: invalid eqpt type.");
 
         ///Require 0.01 msg.value
-        require(msg.value >= (/**item_count */ 1 * mint_fee), "eMNTR: send 0.01 matic");
+        require(msg.value >= (/**item_count */ 1 * mint_fee), "eMNTR: send 1 FTM");
 
         ///Allow only one free mint per character per equipment
         require(!character_minted_free[character_id][_equipment_type], "eMNTR: character already minted.");
@@ -218,38 +219,38 @@ contract EquipmentMinter is Ownable, Pausable{
         ///only one piece of equipment to be crafted. So we multiply the respective amounts by the number of equipment the user has
         ///chosen to mint.
         recipe.main_material_amount = recipe.main_material_amount * item_count;
-        recipe.indirect_material_amount = recipe.indirect_material_amount * item_count;
+        // recipe.indirect_material_amount = recipe.indirect_material_amount * item_count;
         recipe.catalyst_amount = recipe.catalyst_amount * item_count;
 
         ///We fetch the balances of the user for the required materials and also the corresponding contract instance.
         (uint256 main_material_balance, ERC20Burnable main_material_contract) = checkMaterialBalance(recipe.main_material);
-        (uint256 indirect_material_balance, ERC20Burnable indirect_material_contract) = checkMaterialBalance(recipe.indirect_material);
+        // (uint256 indirect_material_balance, ERC20Burnable indirect_material_contract) = checkMaterialBalance(recipe.indirect_material);
         (uint256 catalyst_balance, ERC20Burnable catalyst_contract) = checkCatalystBalance(recipe.catalyst);
 
         ///We compare the user's token balances with the required amounts.
         if(main_material_balance < recipe.main_material_amount){enough = false;}
-        if(indirect_material_balance < recipe.indirect_material_amount){enough = false;}
+        // if(indirect_material_balance < recipe.indirect_material_amount){enough = false;}
         if(catalyst_balance < recipe.catalyst_amount){enough = false;}
 
         ///If the user's token balances are indeed enough for the required materials, we then burn it from the user's balance.
         ///Make sure to prompt the user to set enough token allowances before initiating an equipment request transaction.
         if(enough == true){
             main_material_contract.burnFrom(msg.sender, recipe.main_material_amount);
-            indirect_material_contract.burnFrom(msg.sender, recipe.indirect_material_amount);
+            // indirect_material_contract.burnFrom(msg.sender, recipe.indirect_material_amount);
             catalyst_contract.burnFrom(msg.sender, recipe.catalyst_amount);
         }
     }
 
     ///@notice This function checks the user's balance and returns the corresponding token contract instance.
     function checkMaterialBalance(uint256 material_index) internal view returns (uint256 balance, ERC20Burnable material_contract){
-            address material_address = materials_addresses[material_index];
+            address material_address = materials_addresses;
             material_contract = ERC20Burnable(material_address);
             balance = material_contract.balanceOf(msg.sender);
     }
 
     ///@notice This function checks the user's balance and returns the corresponding token contract instance.
     function checkCatalystBalance(uint256 catalyst_index) internal view returns (uint256 balance, ERC20Burnable catalyst_contract){
-        address catalyst_address = catalysts_addresses[catalyst_index];
+        address catalyst_address = catalysts_addresses;
         catalyst_contract = ERC20Burnable(catalyst_address);
         balance = catalyst_contract.balanceOf(msg.sender);
     }
