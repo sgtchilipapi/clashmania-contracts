@@ -21,7 +21,8 @@ async function main() {
   // const red = await deployERC20("RedSparkstone")
   // const blue = await deployERC20("BlueSparkstone")
   const ene = await deployERC20("Energy")
-  await setPairAddress(rdrs, [mat], [cat])
+  const fact = await deployFactory()
+  await setPairAddress(rdrs, [mat], [cat], fact)
   // const mainPair = await getClankWftmPair(clank)
   const mainPair = deployments.contracts.tokens.rdrsfantom.address  
   // const _chef = await deployChef(clank.address, mainPair)
@@ -54,9 +55,20 @@ async function main() {
     return chef
   }
 
-  async function setPairAddress(clank, materials, catalysts){
+  async function deployFactory() {
+    ///For local tests, deploy a factory on localhost.
+    // const Fact = await ethers.getContractFactory("UniswapV2Factory");
+    // const fact = await Fact.deploy("0x0000000000000000000000000000000000000000");
+    // await fact.deployed()
+    // console.log(`UniswapV2Factory deployed at ${fact.address}`);
+
+    ///For mainnet deployment, use the most popular dex's factory.
     const Factory = await ethers.getContractFactory("UniswapV2Factory")
-    const factory = Factory.attach(deployments.contracts.defi.factory.address)
+    const fact = Factory.attach(deployments.contracts.defi.factory.address)
+    return fact
+  }
+
+  async function setPairAddress(clank, materials, catalysts, factory){
     for(let i = 0; i < materials.length; i++){
       const createPair = await factory.createPair(clank.address, materials[i].address)
       await createPair.wait()

@@ -91,7 +91,7 @@ contract EquipmentMinter is Ownable, Pausable{
         ///The MATIC being received is not payment for the NFT but rather to simply replenish the VRF subscribtion's funds and also serves as an effective anti-spam measure as well.
         ///Restrict number of mints to below 4 to avoid insufficient gas errors and accidental requests for very large number of mints.
         require(item_count > 0 && item_count < 4, "eMNTR: Can only request to mint 1 to 3 items at a time.");
-        require(msg.value >= (item_count * mint_fee), "eMNTR: Incorrect amount for equipment minting. Send exactly 0.01 FTM per item requested.");
+        require(msg.value >= (item_count * mint_fee), "eMNTR: Incorrect amount for equipment minting. Send exactly 1 FTM per item requested.");
         
         ///Burn the materials from the user's balance.
         bool enough = getEquipmentRequirements(_equipment_type, item_count);

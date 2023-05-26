@@ -640,7 +640,7 @@ contract Energy is ERC20, ERC20Burnable, Ownable {
         _;
     }
 
-    function setDungeon(address _dungeon) public onlyOwner {
+    function setDungeonContract(address _dungeon) public onlyOwner {
         dungeon = _dungeon;
     }
 }

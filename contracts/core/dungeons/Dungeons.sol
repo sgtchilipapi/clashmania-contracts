@@ -64,7 +64,7 @@ contract Dungeons is Ownable{
 
     ///The msg.value required to mint to prevent spam and deplete VRF funds
     ///Currently unset (0) for judging purposes as stated in the hackathon rules.
-    uint256 private battle_fee;
+    uint256 private battle_fee = 0.01 ether;
 
     ///This value represents the rate of energy restoration for every character.
     ///In this implementation, it shall be set at 5 energy per minute.
@@ -572,6 +572,6 @@ contract Dungeons is Ownable{
 
     function withdraw() public onlyOwner{
         (bool succeed, ) = vrf_refunder.call{value: address(this).balance}("");
-        require(succeed, "Failed to withdraw matics.");
+        require(succeed, "Failed to withdraw ftms.");
     }
 }
