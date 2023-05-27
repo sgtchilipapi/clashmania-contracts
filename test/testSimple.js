@@ -35,7 +35,7 @@ describe("Characters, Minter and VRF test.", function () {
         await setVRF.wait()
         console.log(`VRF contract has been successfuly set!`)
 
-        const requestCharacter = await minter.requestCharacter(0, "Test Viking")
+        const requestCharacter = await minter.requestCharacter(0, 0, "Test Viking")
         await requestCharacter.wait()
         console.log(`Mint character request has been sent!`)
 

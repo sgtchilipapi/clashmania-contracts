@@ -17,6 +17,11 @@
           "components": [
             {
               "internalType": "uint32",
+              "name": "character_faction",
+              "type": "uint32"
+            },
+            {
+              "internalType": "uint32",
               "name": "character_class",
               "type": "uint32"
             },
@@ -43,11 +48,6 @@
             {
               "internalType": "uint32",
               "name": "talent",
-              "type": "uint32"
-            },
-            {
-              "internalType": "uint32",
-              "name": "mood",
               "type": "uint32"
             },
             {

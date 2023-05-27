@@ -27,9 +27,9 @@ contract CharacterUriConstructor {
         details_part = string.concat(
                             '{"description": "Characters", "image": "',uri_details.image,'", "name": "', _character_name,
                             '", "attributes": [',
-                                '{"trait_type": "character_class", "value": "', uri_details.name,
+                                '{"trait_type": "character_class", "value": "', uri_details._class,
                                 '"}, {"display_type": "boost_percentage", "trait_type": "', uri_details.bonus,'", "value": ',uri_details.bonus_value,'}, ',
-                                '{"trait_type": "mood", "value": "',uri_details.mood,'"}'
+                                '{"trait_type": "faction", "value": "',uri_details.faction,'"}'
         );
     }
 

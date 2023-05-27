@@ -49,14 +49,17 @@ contract CharacterMinter is Ownable, Pausable{
     }
 
     ///@notice This function requests n random number/s from the VRF contract to be consumed with the mint.
-    function requestCharacter(uint32 _character_class, string memory _character_name) public payable whenNotPaused{
+    function requestCharacter(uint32 _character_faction, uint32 _character_class, string memory _character_name) public payable whenNotPaused{
         ///We can only allow one request per address at a time. A request shall be completed (minted the equipment) to be 
         ///able request another one.
         character_request memory _request = request[msg.sender];
         require(_request.request_id == 0, "cMNTR: There is a request pending mint.");
 
         ///Characters can only be a viking, woodcutter, troll, mechanic, amphibian, graverobber
-        require(_character_class < 6, "cMNTR: Incorrect number for a character class.");
+        require(_character_faction < 4, "cMNTR: Incorrect number for a character faction.");
+
+        ///Characters can only be a viking, woodcutter, troll, mechanic, amphibian, graverobber
+        require(_character_class < 5, "cMNTR: Incorrect number for a character class.");
         
         ///The MATIC being received is not payment for the NFT but rather to simply replenish the VRF subscribtion's funds 
         ///and also serves as an effective anti-spam measure as well.
@@ -66,6 +69,7 @@ contract CharacterMinter is Ownable, Pausable{
         ///The bool argument here notifies the vrf contract that the request being sent is NOT experimental.
         request[msg.sender] = character_request({
             request_id: vrf_contract.requestRandomWords(msg.sender, 1, false),
+            character_faction: _character_faction,
             character_class: _character_class,
             _name: _character_name,
             time_requested: block.timestamp
@@ -79,13 +83,16 @@ contract CharacterMinter is Ownable, Pausable{
         fulfilled, the VRF (automatically) mints the NFT within the same transaction as the fulfillment.
         This function requests n random number/s from the VRF contract to be consumed with the mint.
     */
-    function requestCharacterExperimental(uint32 _character_class, string memory _character_name) public payable whenNotPaused{
+    function requestCharacterExperimental(uint32 _character_faction, uint32 _character_class, string memory _character_name) public payable whenNotPaused{
         ///We can only allow one request per address at a time. A request shall be completed (minted the equipment) to be able request another one.
         character_request memory _request = request[msg.sender];
         require(_request.request_id == 0, "cMNTR: There is a request pending mint.");
 
         ///Characters can only be a viking, woodcutter, troll, mechanic, amphibian, graverobber
-        require(_character_class < 6, "cMNTR: Incorrect number for a character class.");
+        require(_character_faction < 4, "cMNTR: Incorrect number for a character faction.");
+
+        ///Characters can only be a viking, woodcutter, troll, mechanic, amphibian, graverobber
+        require(_character_class < 5, "cMNTR: Incorrect number for a character class.");
         
         ///The MATIC being received is not payment for the NFT but rather to simply replenish the VRF subscribtion's funds 
         ///and also serves as an effective anti-spam measure as well.
@@ -95,6 +102,7 @@ contract CharacterMinter is Ownable, Pausable{
         ///The bool argument here notifies the vrf contract that the request being sent is experimental.
         request[msg.sender] = character_request({
             request_id: vrf_contract.requestRandomWords(msg.sender, 1, true),
+            character_faction: _character_faction,
             character_class: _character_class,
             _name: _character_name,
             time_requested: block.timestamp
@@ -114,6 +122,7 @@ contract CharacterMinter is Ownable, Pausable{
 
         request[msg.sender] = character_request({
             request_id: 0,
+            character_faction: 0,
             character_class: 0,
             _name: "",
             time_requested: block.timestamp
@@ -135,11 +144,12 @@ contract CharacterMinter is Ownable, Pausable{
         require(fulfilled, "cMNTRS: Request is not yet fulfilled or invalid request id.");
 
         ///Compute for the character props and mint the character NFT
-        mint(msg.sender, randomNumberRequested[0], _request.character_class, _request._name);
+        mint(msg.sender, randomNumberRequested[0], _request.character_faction, _request.character_class, _request._name);
         
         ///Reset the sender's request property values to 0
         request[msg.sender] = character_request({
             request_id: 0,
+            character_faction: 0,
             character_class: 0,
             _name: "",
             time_requested: block.timestamp
@@ -165,11 +175,12 @@ contract CharacterMinter is Ownable, Pausable{
             // require(fulfilled, "cMNTRS: Request is not yet fulfilled or invalid request id.");
 
         ///Compute for the character props and mint the character NFT
-        mint(user, randomNumberRequested[0], _request.character_class, _request._name);
+        mint(user, randomNumberRequested[0], _request.character_faction, _request.character_class, _request._name);
 
         ///Reset the sender's request property values to 0
         request[user] = character_request({
             request_id: 0,
+            character_faction: 0,
             character_class: 0,
             _name: "",
             time_requested: block.timestamp
@@ -177,12 +188,12 @@ contract CharacterMinter is Ownable, Pausable{
     }
 
     ///@notice This includes external call to the Character NFT Contract to actually mint the tokens.
-    function mint(address user, uint256 randomNumberRequested, uint32 character_class, string memory _name) internal {
-        (character_properties memory character_props) = getResult(randomNumberRequested, character_class);
+    function mint(address user, uint256 randomNumberRequested, uint32 character_faction, uint32 character_class, string memory _name) internal {
+        (character_properties memory character_props) = getResult(randomNumberRequested, character_faction, character_class);
         charactersNft._mintCharacter(user, character_props, _name);
     }
 
-    function getResult(uint256 randomNumber, uint32 character_class) internal pure returns (character_properties memory character_props){
+    function getResult(uint256 randomNumber, uint32 character_faction, uint32 character_class) internal pure returns (character_properties memory character_props){
         ///To save on LINK tokens for our VRF contract, we are breaking a single random word into 8 uint32s.
         ///The reason for this is we will need a lot(6) of random numbers for a single equipment mint.
         ///It is given that the chainlink VRF generates verifiable, truly random numbers that it is safe to assume that breaking this
@@ -200,13 +211,13 @@ contract CharacterMinter is Ownable, Pausable{
         uint32 _mood = getCharacterMood(randomNumbers[2]);
 
         character_props = character_properties({
+            character_faction: character_faction,
             character_class: character_class,
             element: _element,
             str: _str,
             vit: _vit,
             dex: _dex,
             talent: _talent,
-            mood: _mood,
             exp: 0
         });
     }

@@ -124,7 +124,8 @@ contract Characters is ERC721, ERC721Enumerable, Ownable {
             "Nonexistent"
         );
         character_properties memory character_props = character[tokenId];
-        character_uri_details memory uri_details = CharacterLibrary.getCharacter(character_props.character_class, character_props.mood, character_props.talent);
+        character_uri_details memory uri_details = CharacterLibrary.getCharacter(character_props.character_faction, character_props.character_class, character_props.talent);
+        uri_details.name = character_name[tokenId];
         tokenURIString = characterUriConstructor.encodeStrings(character_props, uri_details, character_name[tokenId]);
     }
 
